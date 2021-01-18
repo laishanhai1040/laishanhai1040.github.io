@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Linux environment setup | 梦醒何时尔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="linux environment setup">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux environment setup">
+<meta property="og:url" content="https://laishanhai1040.github.io/2019/07/21/Linux-environment-setup/index.html">
+<meta property="og:site_name" content="梦醒何时尔">
+<meta property="og:description" content="linux environment setup">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-21T05:39:14.000Z">
+<meta property="article:modified_time" content="2021-01-18T10:01:48.527Z">
+<meta property="article:author" content="laishanhai1040">
+<meta property="article:tag" content="linux, vim">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="梦醒何时尔" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">梦醒何时尔</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">从此扰扰攘攘，又不知梦醒何时尔。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://laishanhai1040.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Linux-environment-setup" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/07/21/Linux-environment-setup/" class="article-date">
+  <time class="dt-published" datetime="2019-07-21T05:39:14.000Z" itemprop="datePublished">2019-07-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Blog/">Blog</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Linux environment setup
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Linux-environment-setup"><a href="#Linux-environment-setup" class="headerlink" title="Linux environment setup"></a>Linux environment setup</h1><h2 id="directory-colors"><a href="#directory-colors" class="headerlink" title="directory colors"></a>directory colors</h2><p>install git</p>
+<pre><code>$ sudo apt-get install -y git</code></pre>
+<p>使用solarized theme for GNU ls</p>
+<pre><code>$ git clone https://github.com/seebi/dircolors-solarized.git</code></pre>
+<p>使用dircolors.256dark配色</p>
+<pre><code>$ cp ~/dircolors-solarized/dircolors.256dark ~/.dircolors
+$ eval &#39;dircolors .dircolors&#39;</code></pre>
+<p>设置Terminal支持256色， vim .bashrc并添加以下内容</p>
+<pre><code>export TERM=xterm-256color
+alias lsa=&#39;ls -alh&#39;</code></pre>
+<p>最后再source一下.bashrc</p>
+<pre><code>$ source .bashrc</code></pre>
+<p>或者重新登录一下终端</p>
+<h2 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h2><p>新建一个工作目录vim</p>
+<pre><code>$ mkdir ~/vim
+$ cd ~/vim</code></pre>
+<p>安装Vundle</p>
+<pre><code>$ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim</code></pre>
+<p>vim使用molokai主题</p>
+<pre><code>$ git clone https://github.com/tomasr/molokai.git ~/vim
+$ sudo cp molokai.vim /usr/share/vim/vim74/colors/</code></pre>
+<p>安装ctags</p>
+<pre><code>$ sudo apt-get install -y ctags</code></pre>
+<p>从github上获取我的vimrc文件</p>
+<pre><code>$ git clone https://github.com/laishanhai1040/vimrc.git ~/vim
+$ cp ~/vimrc/.vimrc ~/.vimrc</code></pre>
+<p>然后打开vim, 在命令模式使用PluginInstall安装vim插件。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://laishanhai1040.github.io/2019/07/21/Linux-environment-setup/" data-id="ckk2ekfu00000i7yq4hyhfnxu" data-title="Linux environment setup" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux-vim/" rel="tag">linux, vim</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/01/09/Samba-setup-summary/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">samba setup summary</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux-vim/" rel="tag">linux, vim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/samba/" rel="tag">samba</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/linux-vim/" style="font-size: 10px;">linux, vim</a> <a href="/tags/samba/" style="font-size: 10px;">samba</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/21/Linux-environment-setup/">Linux environment setup</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/09/Samba-setup-summary/">samba setup summary</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 laishanhai1040<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
