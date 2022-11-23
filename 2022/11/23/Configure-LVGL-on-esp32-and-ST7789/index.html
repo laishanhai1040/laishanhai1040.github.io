@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    
+    <title>Configure LVGL on esp32 and ST7789 - 梦醒何时尔</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="Configure LVGL on esp32 and ST7789">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Configure LVGL on esp32 and ST7789">
+<meta property="og:url" content="https://laishanhai1040.github.io/2022/11/23/Configure-LVGL-on-esp32-and-ST7789/index.html">
+<meta property="og:site_name" content="梦醒何时尔">
+<meta property="og:description" content="Configure LVGL on esp32 and ST7789">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/lai-shanhai/spi_lvgl_st7789/raw/master/resource/jpg/lvgl_st7789.png">
+<meta property="article:published_time" content="2022-11-23T07:23:28.000Z">
+<meta property="article:modified_time" content="2022-11-23T07:41:37.745Z">
+<meta property="article:author" content="laishanhai1040">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="LVGL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/lai-shanhai/spi_lvgl_st7789/raw/master/resource/jpg/lvgl_st7789.png">
+    
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+<link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
+
+
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1669189305608">
+    
+    <link rel="stylesheet" href="/css/style.css?v=1669189305609">
+
+    
+        
+            <link rel="stylesheet" href="/custom.css?v=1669189305609">
+        
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="mdui-drawer-body-left">
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://1040563090.oss-cn-shenzhen.aliyuncs.com/background/shenzhenwan01.png)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="laishanhai1040" class="mdui-btn mdui-btn-icon"><img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/avatar/20191020_124641.jpg" alt="laishanhai1040"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="laishanhai1040">
+            <img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/avatar/20191020_124641.jpg" alt="laishanhai1040" alt="laishanhai1040">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>5</div>
+        <div><span>Tags</span>6</div>
+        <div><span>Categories</span>3</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/donate.html" title="给我赞助">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                给我赞助
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:laishanhai1040.github.io" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+            </form>
+         
+    </div>
+</div>
+
+
+
+
+    
+        
+        <div class="nexmoe-widget-wrap">
+	<div class="nexmoe-widget nexmoe-social">
+		<a
+			class="mdui-ripple"
+			href="https://jq.qq.com/?_wv=1027&k=5CfKHun"
+			target="_blank"
+			mdui-tooltip="{content: 'QQ群'}"
+			style="
+				color: rgb(249, 174, 8);
+				background-color: rgba(249, 174, 8, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-QQ"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://space.bilibili.com/35720273"
+			target="_blank"
+			mdui-tooltip="{content: '哔哩哔哩'}"
+			style="
+				color: rgb(231, 106, 141);
+				background-color: rgba(231, 106, 141, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-bilibili"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/laishanhai1040/"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://www.zhihu.com/people/nexmoe"
+			target="_blank"
+			mdui-tooltip="{content: '知乎'}"
+			style="
+				color: rgb(30, 136, 229);
+				background-color: rgba(30, 136, 229, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-zhihu"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://twitter.com/nexmoe"
+			target="_blank"
+			mdui-tooltip="{content: 'Twitter'}"
+			style="
+				color: rgb(59, 151, 239);
+				background-color: rgba(59, 151, 239, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-twitter"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://nexmoe.com/atom.xml"
+			target="_blank"
+			mdui-tooltip="{content: 'RSS'}"
+			style="
+				color: rgb(247, 132, 34);
+				background-color: rgba(247, 132, 34, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-rss"
+			></i> </a
+		>
+	</div>
+</div>
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Categories</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/CAD/">CAD</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/ESP32/">ESP32</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Linux/">Linux</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/CAD-shortcut/" style="font-size: 10px;">CAD shortcut</a> <a href="/tags/ESP32/" style="font-size: 10px;">ESP32</a> <a href="/tags/LVGL/" style="font-size: 10px;">LVGL</a> <a href="/tags/linux-vim/" style="font-size: 10px;">linux vim</a> <a href="/tags/samba/" style="font-size: 10px;">samba</a> <a href="/tags/shadowsocks/" style="font-size: 10px;">shadowsocks</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(17);
+        var tags_length = parseInt(6);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+        
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Archive</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Recent Posts</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/11/23/Configure-LVGL-on-esp32-and-ST7789/">Configure LVGL on esp32 and ST7789</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/17/AutoCAD-2014-shortcut/">AutoCAD 2014 shortcut</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/21/Linux-environment-setup/">Linux environment setup</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/21/Shadowsocks-setup-summary/">Shadowsocks-setup-summary</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/09/Samba-setup-summary/">samba setup summary</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-link">
+		<ul>
+        
+            <li>
+                <a href="https://xiaoshu.app/" target="_blank" >
+                    <img src="https://xsm.nexmoe.com/images/Infinite/Snipaste_2022-05-18_20-46-50.png" alt="小舒同学"></img>
+                    <p>小舒同学</p>
+                </a>
+            </li>
+        
+            <li>
+                <a href="https://nexmoe.com/" target="_blank" >
+                    <img src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/avatar.png" alt="折影轻梦"></img>
+                    <p>折影轻梦</p>
+                </a>
+            </li>
+        
+		</ul>
+    </div>
+</div>
+<style>
+.nexmoe-widget-wrap .nexmoe-link ul li a {
+    text-align : center;
+}
+.nexmoe-widget-wrap .nexmoe-link ul li a img {
+    max-width : 100%;
+}
+.nexmoe-widget-wrap .nexmoe-link ul li a p {
+    margin: 10px 0;
+}
+</style>
+
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 laishanhai1040
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        <br><a target="_blank" href="https://beian.miit.gov.cn/">鄂ICP备2020018486号</a> <br><a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"> <img src="https://i.dawnlab.me/c0268c1e6cfd0863d6ba35be1575941a.png" width="150px"></a>
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+    
+        <div class="nexmoe-post-cover absolute" style="padding-top: NaN%;"> 
+            <img src="https://github.com/espressif/esp-dev-kits/raw/master/docs/_static/esp32-s3-lcd-ev-board/esp32-s3-lcd-ev-board.png" alt="Configure LVGL on esp32 and ST7789" loading="lazy">
+            <h1>Configure LVGL on esp32 and ST7789</h1>
+        </div>
+    
+    
+    <div class="nexmoe-post-meta">
+    <div class="nexmoe-rainbow">
+        <a class="nexmoefont icon-calendar-fill">2022年11月23日</a>
+        
+            <a class="nexmoefont icon-appstore-fill -link" href="/categories/ESP32/">ESP32</a>
+        
+        
+    </div>
+    
+    
+    
+    
+    
+</div>
+
+    <table>
+<thead>
+<tr>
+<th>Supported Targets</th>
+<th>ESP32</th>
+<th>ESP32-C2</th>
+<th>ESP32-C3</th>
+<th>ESP32-S2</th>
+<th>ESP32-S3</th>
+</tr>
+</thead>
+</table>
+<h1 id="esp-idf-lvgl-st7789"><a href="#esp-idf-lvgl-st7789" class="headerlink" title="esp-idf lvgl st7789"></a>esp-idf lvgl st7789</h1><h2 id="基于ESP-IDF-v5-0-spi-lcd-touch-修改"><a href="#基于ESP-IDF-v5-0-spi-lcd-touch-修改" class="headerlink" title="基于ESP-IDF v5.0 spi_lcd_touch 修改"></a>基于ESP-IDF v5.0 <a target="_blank" rel="noopener" href="https://gitee.com/EspressifSystems/esp-idf/tree/master/examples/peripherals/lcd/spi_lcd_touch">spi_lcd_touch</a> 修改</h2><h3 id="官方示例-只支持了-ILI9341-和-GC9A01，在idf中，有提供-st7789-的驱动文件"><a href="#官方示例-只支持了-ILI9341-和-GC9A01，在idf中，有提供-st7789-的驱动文件" class="headerlink" title="官方示例 只支持了 ILI9341 和 GC9A01，在idf中，有提供 st7789 的驱动文件"></a>官方示例 只支持了 ILI9341 和 GC9A01，在idf中，有提供 <a target="_blank" rel="noopener" href="https://gitee.com/EspressifSystems/esp-idf/blob/master/components/esp_lcd/src/esp_lcd_panel_st7789.c">st7789 的驱动文件</a></h3><p><img onerror="imgOnError(this);" data-fancybox="gallery" src="https://gitee.com/lai-shanhai/spi_lvgl_st7789/raw/master/resource/jpg/lvgl_st7789.png" alt="demo" data-caption="demo" loading="lazy"></p>
+<h3 id="新建一个components"><a href="#新建一个components" class="headerlink" title="新建一个components,"></a>新建一个components,</h3><p>并且在修改 main.c, 在menuconfig 中， LCD Controller 选择 ST7789.<br>另外，我的屏幕是RBG显示的，不是RGB，如果上传发现颜色显示错误，在 220行，改为 .rgb_endian &#x3D; LCD_RGB_ENDIAN_RGB<br><code>#219 #elif CONFIG_EXAMPLE_LCD_CONTROLLER_ST7789</code><br><code>#220        .rgb_endian = LCD_RGB_ENDIAN_RGB,</code> </p>
+<p><br><br><br></p>
+<h1 id="下面是原来的-README-md"><a href="#下面是原来的-README-md" class="headerlink" title="下面是原来的 README.md"></a>下面是原来的 README.md</h1><br>
+
+<h1 id="SPI-LCD-and-Touch-Panel-Example"><a href="#SPI-LCD-and-Touch-Panel-Example" class="headerlink" title="SPI LCD and Touch Panel Example"></a>SPI LCD and Touch Panel Example</h1><p><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/lcd.html">esp_lcd</a> provides several panel drivers out-of box, e.g. ST7789, SSD1306, NT35510. However, there’re a lot of other panels on the market, it’s beyond <code>esp_lcd</code> component’s responsibility to include them all.</p>
+<p><code>esp_lcd</code> allows user to add their own panel drivers in the project scope (i.e. panel driver can live outside of esp-idf), so that the upper layer code like LVGL porting code can be reused without any modifications, as long as user-implemented panel driver follows the interface defined in the <code>esp_lcd</code> component.</p>
+<p>This example shows how to use GC9A01 or ILI9341 display driver from Component manager in esp-idf project. These components are using API provided by <code>esp_lcd</code> component. This example will draw a fancy dash board with the LVGL library. For more information about porting the LVGL library, you can also refer to <a href="../i80_controller/README.md">another lvgl porting example</a>.</p>
+<h2 id="Touch-controller-STMPE610"><a href="#Touch-controller-STMPE610" class="headerlink" title="Touch controller STMPE610"></a>Touch controller STMPE610</h2><p>In this example you can enable touch controller STMPE610 connected via SPI. The SPI connection is shared with LCD screen.</p>
+<h2 id="How-to-use-the-example"><a href="#How-to-use-the-example" class="headerlink" title="How to use the example"></a>How to use the example</h2><h3 id="Hardware-Required"><a href="#Hardware-Required" class="headerlink" title="Hardware Required"></a>Hardware Required</h3><ul>
+<li>An ESP development board</li>
+<li>An GC9A01 or ILI9341 LCD panel, with SPI interface (with&#x2F;without STMPE610 SPI touch)</li>
+<li>An USB cable for power supply and programming</li>
+</ul>
+<h3 id="Hardware-Connection"><a href="#Hardware-Connection" class="headerlink" title="Hardware Connection"></a>Hardware Connection</h3><p>The connection between ESP Board and the LCD is as follows:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">       ESP Board                       GC9A01/ILI9341 Panel + TOUCH</span><br><span class="line">┌──────────────────────┐              ┌────────────────────┐</span><br><span class="line">│             GND      ├─────────────►│ GND                │</span><br><span class="line">│                      │              │                    │</span><br><span class="line">│             3V3      ├─────────────►│ VCC                │</span><br><span class="line">│                      │              │                    │</span><br><span class="line">│             PCLK     ├─────────────►│ SCL                │</span><br><span class="line">│                      │              │                    │</span><br><span class="line">│             MOSI     ├─────────────►│ MOSI               │</span><br><span class="line">│                      │              │                    │</span><br><span class="line">│             MISO     |◄─────────────┤ MISO               │</span><br><span class="line">│                      │              │                    │</span><br><span class="line">│             RST      ├─────────────►│ RES                │</span><br><span class="line">│                      │              │                    │</span><br><span class="line">│             DC       ├─────────────►│ DC                 │</span><br><span class="line">│                      │              │                    │</span><br><span class="line">│             LCD CS   ├─────────────►│ LCD CS             │</span><br><span class="line">│                      │              │                    │</span><br><span class="line">│             TOUCH CS ├─────────────►│ TOUCH CS           │</span><br><span class="line">│                      │              │                    │</span><br><span class="line">│             BK_LIGHT ├─────────────►│ BLK                │</span><br><span class="line">└──────────────────────┘              └────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>The GPIO number used by this example can be changed in <a href="main/spi_lcd_touch_example_main.c">lvgl_example_main.c</a>.<br>Especially, please pay attention to the level used to turn on the LCD backlight, some LCD module needs a low level to turn it on, while others take a high level. You can change the backlight level macro <code>EXAMPLE_LCD_BK_LIGHT_ON_LEVEL</code> in <a href="main/spi_lcd_touch_example_main.c">lvgl_example_main.c</a>.</p>
+<h3 id="Build-and-Flash"><a href="#Build-and-Flash" class="headerlink" title="Build and Flash"></a>Build and Flash</h3><p>Run <code>idf.py -p PORT build flash monitor</code> to build, flash and monitor the project. A fancy animation will show up on the LCD as expected.</p>
+<p>The first time you run <code>idf.py</code> for the example will cost extra time as the build system needs to address the component dependencies and downloads the missing components from registry into <code>managed_components</code> folder.</p>
+<p>(To exit the serial monitor, type <code>Ctrl-]</code>.)</p>
+<p>See the <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html">Getting Started Guide</a> for full steps to configure and use ESP-IDF to build projects.</p>
+<h3 id="Example-Output"><a href="#Example-Output" class="headerlink" title="Example Output"></a>Example Output</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">I (409) cpu_start: Starting scheduler on APP CPU.</span><br><span class="line">I (419) example: Turn off LCD backlight</span><br><span class="line">I (419) gpio: GPIO[2]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0</span><br><span class="line">I (429) example: Initialize SPI bus</span><br><span class="line">I (439) example: Install panel IO</span><br><span class="line">I (439) gpio: GPIO[5]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0</span><br><span class="line">I (449) example: Install GC9A01 panel driver</span><br><span class="line">I (459) gpio: GPIO[3]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0</span><br><span class="line">I (589) gpio: GPIO[0]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0</span><br><span class="line">I (589) example: Initialize <span class="built_in">touch</span> controller STMPE610</span><br><span class="line">I (589) STMPE610: TouchPad ID: 0x0811</span><br><span class="line">I (589) STMPE610: TouchPad Ver: 0x03</span><br><span class="line">I (599) example: Turn on LCD backlight</span><br><span class="line">I (599) example: Initialize LVGL library</span><br><span class="line">I (609) example: Register display driver to LVGL</span><br><span class="line">I (619) example: Install LVGL tick timer</span><br><span class="line">I (619) example: Display LVGL Meter Widget</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h2><ul>
+<li>Why the LCD doesn’t light up?<ul>
+<li>Check the backlight’s turn-on level, and update it in <code>EXAMPLE_LCD_BK_LIGHT_ON_LEVEL</code></li>
+</ul>
+</li>
+</ul>
+<p>For any technical queries, please open an [issue] (<a target="_blank" rel="noopener" href="https://github.com/espressif/esp-idf/issues">https://github.com/espressif/esp-idf/issues</a>) on GitHub. We will get back to you soon.</p>
+
+    <p><img data-fancybox="gallery" src="https://i.dawnlab.me/53a8c7cf3ad77a0f0a456ce2c6afe88a.png"  alt="53a8c7cf3ad77a0f0a456ce2c6afe88a.png" data-caption="53a8c7cf3ad77a0f0a456ce2c6afe88a.png" loading="lazy"></p>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>Author：</strong>laishanhai1040<br>
+        <strong>Link：</strong><a href="https://laishanhai1040.github.io/2022/11/23/Configure-LVGL-on-esp32-and-ST7789/" title="https:&#x2F;&#x2F;laishanhai1040.github.io&#x2F;2022&#x2F;11&#x2F;23&#x2F;Configure-LVGL-on-esp32-and-ST7789&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;laishanhai1040.github.io&#x2F;2022&#x2F;11&#x2F;23&#x2F;Configure-LVGL-on-esp32-and-ST7789&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+   
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/ESP32/" rel="tag">ESP32</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/LVGL/" rel="tag">LVGL</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          请在你的配置文件中设置评论框插槽
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#esp-idf-lvgl-st7789"><span class="toc-number">1.</span> <span class="toc-text">esp-idf lvgl st7789</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EESP-IDF-v5-0-spi-lcd-touch-%E4%BF%AE%E6%94%B9"><span class="toc-number">1.1.</span> <span class="toc-text">基于ESP-IDF v5.0 spi_lcd_touch 修改</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E7%A4%BA%E4%BE%8B-%E5%8F%AA%E6%94%AF%E6%8C%81%E4%BA%86-ILI9341-%E5%92%8C-GC9A01%EF%BC%8C%E5%9C%A8idf%E4%B8%AD%EF%BC%8C%E6%9C%89%E6%8F%90%E4%BE%9B-st7789-%E7%9A%84%E9%A9%B1%E5%8A%A8%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.1.</span> <span class="toc-text">官方示例 只支持了 ILI9341 和 GC9A01，在idf中，有提供 st7789 的驱动文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AAcomponents"><span class="toc-number">1.1.2.</span> <span class="toc-text">新建一个components,</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8B%E9%9D%A2%E6%98%AF%E5%8E%9F%E6%9D%A5%E7%9A%84-README-md"><span class="toc-number">2.</span> <span class="toc-text">下面是原来的 README.md</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SPI-LCD-and-Touch-Panel-Example"><span class="toc-number">3.</span> <span class="toc-text">SPI LCD and Touch Panel Example</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Touch-controller-STMPE610"><span class="toc-number">3.1.</span> <span class="toc-text">Touch controller STMPE610</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-use-the-example"><span class="toc-number">3.2.</span> <span class="toc-text">How to use the example</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware-Required"><span class="toc-number">3.2.1.</span> <span class="toc-text">Hardware Required</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware-Connection"><span class="toc-number">3.2.2.</span> <span class="toc-text">Hardware Connection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Build-and-Flash"><span class="toc-number">3.2.3.</span> <span class="toc-text">Build and Flash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example-Output"><span class="toc-number">3.2.4.</span> <span class="toc-text">Example Output</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Troubleshooting"><span class="toc-number">3.3.</span> <span class="toc-text">Troubleshooting</span></a></li></ol></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="Back To Top" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-search-space">
+	<div class="search-container">
+		<div class="search-header">
+			<div class="search-input-container">
+				<input
+					class="search-input"
+					type="text"
+					placeholder="Search"
+					oninput="sinput();"
+				/>
+			</div>
+			<a class="search-close" onclick="sclose();">×</a>
+		</div>
+		<div class="search-body"></div>
+	</div>
+</div>
+
+    
+<script src="/lib/mdui_043tiny/mdui.js"></script>
+<script src="/lib/fancybox/fancybox.umd.js"></script>
+
+
+ 
+
+<script async src="/js/app.js?v=1669189305622"></script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
