@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    
+    <title>Shadowsocks-setup-summary - 梦醒何时尔</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="使用Digital Ocean创建shadowsocks连接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shadowsocks-setup-summary">
+<meta property="og:url" content="https://laishanhai1040.github.io/2019/07/21/Shadowsocks-setup-summary/index.html">
+<meta property="og:site_name" content="梦醒何时尔">
+<meta property="og:description" content="使用Digital Ocean创建shadowsocks连接">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/ssh_key_1.PNG">
+<meta property="og:image" content="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/ssh_key_2.PNG">
+<meta property="og:image" content="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/ssh_key_3.PNG">
+<meta property="og:image" content="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/ssh_key_4.PNG">
+<meta property="og:image" content="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/add_sshkey_to_DO.PNG">
+<meta property="og:image" content="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/add_sshkey_to_DO_4.PNG">
+<meta property="og:image" content="http://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/add_sshkey_to_DO_3.PNG">
+<meta property="og:image" content="http://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/create_droplet_detail_1.PNG">
+<meta property="og:image" content="http://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/DO_speedtest_sgp.PNG">
+<meta property="og:image" content="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/create_droplet_detail_2.PNG">
+<meta property="og:image" content="http://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/droplet_list.PNG">
+<meta property="og:image" content="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/droplet_detail_2.PNG">
+<meta property="og:image" content="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/new_xshell_config_1.PNG">
+<meta property="og:image" content="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/new_xshell_config_2.PNG">
+<meta property="og:image" content="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/new_xshell_config_3.PNG">
+<meta property="og:image" content="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/new_xshell_config_4.PNG">
+<meta property="article:published_time" content="2019-07-21T05:39:14.000Z">
+<meta property="article:modified_time" content="2022-11-23T06:46:32.072Z">
+<meta property="article:author" content="laishanhai1040">
+<meta property="article:tag" content="shadowsocks">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/ssh_key_1.PNG">
+    
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+<link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
+
+
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1669187755039">
+    
+    <link rel="stylesheet" href="/css/style.css?v=1669187755039">
+
+    
+        
+            <link rel="stylesheet" href="/custom.css?v=1669187755039">
+        
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="mdui-drawer-body-left">
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://1040563090.oss-cn-shenzhen.aliyuncs.com/background/shenzhenwan01.png)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="laishanhai1040" class="mdui-btn mdui-btn-icon"><img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/avatar/20191020_124641.jpg" alt="laishanhai1040"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="laishanhai1040">
+            <img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/avatar/20191020_124641.jpg" alt="laishanhai1040" alt="laishanhai1040">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>4</div>
+        <div><span>Tags</span>4</div>
+        <div><span>Categories</span>2</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/donate.html" title="给我赞助">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                给我赞助
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:laishanhai1040.github.io" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+            </form>
+         
+    </div>
+</div>
+
+
+
+
+    
+        
+        <div class="nexmoe-widget-wrap">
+	<div class="nexmoe-widget nexmoe-social">
+		<a
+			class="mdui-ripple"
+			href="https://jq.qq.com/?_wv=1027&k=5CfKHun"
+			target="_blank"
+			mdui-tooltip="{content: 'QQ群'}"
+			style="
+				color: rgb(249, 174, 8);
+				background-color: rgba(249, 174, 8, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-QQ"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://space.bilibili.com/35720273"
+			target="_blank"
+			mdui-tooltip="{content: '哔哩哔哩'}"
+			style="
+				color: rgb(231, 106, 141);
+				background-color: rgba(231, 106, 141, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-bilibili"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/laishanhai1040/"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://www.zhihu.com/people/nexmoe"
+			target="_blank"
+			mdui-tooltip="{content: '知乎'}"
+			style="
+				color: rgb(30, 136, 229);
+				background-color: rgba(30, 136, 229, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-zhihu"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://twitter.com/nexmoe"
+			target="_blank"
+			mdui-tooltip="{content: 'Twitter'}"
+			style="
+				color: rgb(59, 151, 239);
+				background-color: rgba(59, 151, 239, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-twitter"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://nexmoe.com/atom.xml"
+			target="_blank"
+			mdui-tooltip="{content: 'RSS'}"
+			style="
+				color: rgb(247, 132, 34);
+				background-color: rgba(247, 132, 34, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-rss"
+			></i> </a
+		>
+	</div>
+</div>
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Categories</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/CAD/">CAD</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Linux/">Linux</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/CAD-shortcut/" style="font-size: 10px;">CAD shortcut</a> <a href="/tags/linux-vim/" style="font-size: 10px;">linux vim</a> <a href="/tags/samba/" style="font-size: 10px;">samba</a> <a href="/tags/shadowsocks/" style="font-size: 10px;">shadowsocks</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(17);
+        var tags_length = parseInt(4);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+        
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Archive</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Recent Posts</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/04/17/AutoCAD-2014-shortcut/">AutoCAD 2014 shortcut</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/21/Linux-environment-setup/">Linux environment setup</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/21/Shadowsocks-setup-summary/">Shadowsocks-setup-summary</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/09/Samba-setup-summary/">samba setup summary</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-link">
+		<ul>
+        
+            <li>
+                <a href="https://xiaoshu.app/" target="_blank" >
+                    <img src="https://xsm.nexmoe.com/images/Infinite/Snipaste_2022-05-18_20-46-50.png" alt="小舒同学"></img>
+                    <p>小舒同学</p>
+                </a>
+            </li>
+        
+            <li>
+                <a href="https://nexmoe.com/" target="_blank" >
+                    <img src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/avatar.png" alt="折影轻梦"></img>
+                    <p>折影轻梦</p>
+                </a>
+            </li>
+        
+		</ul>
+    </div>
+</div>
+<style>
+.nexmoe-widget-wrap .nexmoe-link ul li a {
+    text-align : center;
+}
+.nexmoe-widget-wrap .nexmoe-link ul li a img {
+    max-width : 100%;
+}
+.nexmoe-widget-wrap .nexmoe-link ul li a p {
+    margin: 10px 0;
+}
+</style>
+
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 laishanhai1040
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        <br><a target="_blank" href="https://beian.miit.gov.cn/">鄂ICP备2020018486号</a> <br><a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"> <img src="https://i.dawnlab.me/c0268c1e6cfd0863d6ba35be1575941a.png" width="150px"></a>
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+    
+        <div class="nexmoe-post-cover absolute" style="padding-top: NaN%;"> 
+            <img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/background/rose.png" alt="Shadowsocks-setup-summary" loading="lazy">
+            <h1>Shadowsocks-setup-summary</h1>
+        </div>
+    
+    
+    <div class="nexmoe-post-meta">
+    <div class="nexmoe-rainbow">
+        <a class="nexmoefont icon-calendar-fill">2019年07月21日</a>
+        
+            <a class="nexmoefont icon-appstore-fill -link" href="/categories/Linux/">Linux</a>
+        
+        
+    </div>
+    
+    
+    
+    
+    
+</div>
+
+    <h1 id="使用Digital-Ocean的新加坡droplet"><a href="#使用Digital-Ocean的新加坡droplet" class="headerlink" title="使用Digital Ocean的新加坡droplet"></a>使用Digital Ocean的新加坡droplet</h1><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>debian 8.6<br>shadowsocks</p>
+<h2 id="Digital-Ocean"><a href="#Digital-Ocean" class="headerlink" title="Digital Ocean"></a>Digital Ocean</h2><p>现在比较出名的vps服务商有<a target="_blank" rel="noopener" href='https://aws.amazon.com'>Amazon web services </a>和<a target="_blank" rel="noopener" href='https://www.linode.com/'>Linode </a>和<a target="_blank" rel="noopener" href='https://www.digitalocean.com/'>Digital Ocean </a>.<br>Amazon web service看官网有新注册免费使用一年的<a target="_blank" rel="noopener" href='https://aws.amazon.com/cn/free/?sc_channel=PS&sc_campaign=acquisition_CN&sc_publisher=baidu&sc_medium=cloud_computing_b&sc_content=aws_e&sc_detail=aws_708&sc_category=cloud_computing_b&sc_segment=708&sc_matchtype=phrase&sc_country=CN&s_kwcid=AL!4422!88!5293109925!!16914971671&ef_id=WGUnMgAABMpVQg5w:20170111074724:s'>免费套餐 </a>，不过因为本人没有信用卡只能放弃.<br>Linode没有使用过，不做评价。<br>现在用的是Digital Ocean,选用最低配置一个月5美元，<br>这配置用来做shadowsocks服务器也绰绰有余了，<br>虽然标称带宽是1Mbps,但是配合4G的Android手机配合shadowsocks<br>用的新加坡的节点使用上youtube能达到4MB&#x2F;s的下载速度，<br>没用专门测过。具体还是要看使用的网络运营商，移动联通电信出口路由的不同会对使用效果造成差异。<br>选择Digital Ocean的另一个原因是可以使用paypal支付，注册paypal然后绑定国内的银联银行卡<br>就可以使用，支付时的美元折算成人民币根据当天的汇率计算。<br>新用户注册DO时，使用网友的分享链接，注册完会有$10的奖励，同时分享的网友可以获得奖励，<br>这种奖励机制在各个vps服务商都有。<br>在这里也附上我的<a target="_blank" rel="noopener" href='https://m.do.co/c/3089c71e176d'>分享链接: https://m.do.co/c/3089c71e176d</a><br>注册后充值$5就可以新建一个vps了.<br>在DO这里，一个vps叫做droplet，大概是水滴的意思。<br>在新建新的droplet之前还有一个步骤，就是在电脑上创建SSH key.  </p>
+<h3 id="创建SSH-key"><a href="#创建SSH-key" class="headerlink" title="创建SSH key"></a>创建SSH key</h3><p>在建好vps后，我们是通过ssh来控制vps的，因此我们在当前的电脑上要有一个ssh客户端，<br>在windows上可以使用Putty,是免安装的，如果经常使用的话，可以安装Xshell 5,<br>可以同时使用几个标签页，方便在不同目录下操作，而且字体也比较好看，<br>为了以后方便我们使用Xshell。<br>Xshell 5对于个人和学生用户是免费的，可以在官网下载。<br>ssh客户端连接服务器有两种方式，一种是使用ssh key连接，另一种是使用密码连接。<br>新建的droplet是使用ssh key连接，所以我们要在新建droplet之前先创建ssh key。<br>安装好xshell后，打开xshell 的工具可以看到”新建用户密钥生成想到”，<br>点击后如下：<br><img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/ssh_key_1.PNG" /><br>密钥类型为RSA,密钥长度为2048，我们默认即可。生成后继续下一步。<br><img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/ssh_key_2.PNG" /><br>在这里我们输入密码。然后点击完成。<br><img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/ssh_key_3.PNG" /><br>在这里我们就可以看到我们生成的密钥了，然后我们选中新生成的密钥，点击属性,在弹出的窗口再选择公钥，可以看到：<br><img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/ssh_key_4.PNG" /><br>公钥格式默认为SSH2-OpenSSH,框中的一串字符就是我们要用到的密钥了。  </p>
+<h3 id="在DO-账户中添加ssh-key"><a href="#在DO-账户中添加ssh-key" class="headerlink" title="在DO 账户中添加ssh key"></a>在DO 账户中添加ssh key</h3><p>我们用新注册的账户登录上DO，点击账户-setting-security<br><img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/add_sshkey_to_DO.PNG" /><br>我们点击Add SSH Key就可以添加ssh key了<br><img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/add_sshkey_to_DO_4.PNG" /><br>我们把创建的ssh key那一串字符完整的复制到SSH key content这一框中，<br>在name这一框中输入一些xshell,然后点击蓝色的Add SSH Key，网页便会提示<br>Add SSH key successfully.  </p>
+<img src="http://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/add_sshkey_to_DO_3.PNG" />  
+上图中红线框中的就是我们新添加的ssh key.
+
+<h4 id="create-droplet"><a href="#create-droplet" class="headerlink" title="create droplet"></a>create droplet</h4><p>下一步我们就可以开始创建dropletle,<br>在首页右上角点击Create Deoplet<br><img src="http://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/create_droplet_detail_1.PNG" /><br>在这里我们选择droplet的Linux发行版，配置，vps机房的国家位置。<br>对于机房位置的选择，DO有一个全球各个机房的测速网站<a target="_blank" rel="noopener" href='http://speedtest-sgp1.digitalocean.com/'>测速网站</a>，<br>我们可以先用自己常用的网络测速，选择一个网络延迟最小的、网络速度较好的机房位置，<br>在这里是强调一下网络延迟，xshell默认延迟是300ms，当连接主机时延迟大于300ms时会连不上，虽然可以更改xshell设置大于300ms，不过这样<br>在终端输命令时延迟大也会影响使用，使用shadowsocks代理以后浏览网页也要点了等很久才有反应。一般延迟小的节点速度都不会很慢。<br><img src="http://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/DO_speedtest_sgp.PNG" /><br>我们在Add your SSH keys中勾选我们添加的Xshell.  </p>
+<img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/create_droplet_detail_2.PNG" />  
+最后，点击create 就可以创建一个droplet了。  
+<img src="http://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/droplet_list.PNG" />  
+创建完回到droplets,就可以看到droplets列表，在这里，我们可以看到droplet的名字、状态、主机IP地址、和启动时间。  
+
+<img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/droplet_detail_2.PNG" />  
+点击进去后可以看到详细的运行状态，在这里我们在这里创建snapshots.  
+
+<p>到这里vps就创建好了。<br>接下来我们通过xshell连接到vps。<br>首先打开xshell 5， 新建会话属性。<br><img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/new_xshell_config_1.PNG" /><br>在这里我们填写名称，协议选择SSH, 将新建的droplet中的ip地址复制到主机中，端口默认为20。<br>然后点击“用户身份登录”<br><img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/new_xshell_config_2.PNG" /><br>方法选择Public Key， 用户名为root, 用户密钥为前面生成的，及密码。<br>完成后确定。<br>然后点击xshell 5的打开会话。<br><img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/new_xshell_config_3.PNG" /><br>选择我们创建的会话连接，点击连接后，连接成功后就能看到下面的提示了。  </p>
+<img src="https://1040563090.oss-cn-shenzhen.aliyuncs.com/markdown/20170110_shadowsocks/new_xshell_config_4.PNG" />  
+
+<h2 id="shadowsocks"><a href="#shadowsocks" class="headerlink" title="shadowsocks"></a>shadowsocks</h2><h3 id="在服务器安装shadowsocks"><a href="#在服务器安装shadowsocks" class="headerlink" title="在服务器安装shadowsocks"></a>在服务器安装shadowsocks</h3><p>在Debian&#x2F;Ubuntu安装shadowsocks</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get install -y python-pip</span><br><span class="line">$ sudo pip install shadowsocks</span><br></pre></td></tr></table></figure>
+<p>在CentOS安装shadowsocks</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install python-setuptools &amp;&amp; easy_install pip</span><br><span class="line">$ sudo pip install shadowsocks</span><br></pre></td></tr></table></figure>
+<h3 id="启动shadowsocks服务"><a href="#启动shadowsocks服务" class="headerlink" title="启动shadowsocks服务"></a>启动shadowsocks服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ssserver -p 8836 -k <span class="string">&#x27;password&#x27;</span> -m aes-256-cfb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者可以通过以下指令后台启动shadowsocks的服务</span></span><br><span class="line">ssserver -p 8836 -k <span class="string">&#x27;password&#x27;</span> -m aes-256-cfb -d start</span><br><span class="line">ssserver -p 8836 -k <span class="string">&#x27;password&#x27;</span> -m aes-256-cfb -d stop</span><br></pre></td></tr></table></figure>
+
+<p>使用配置文件的方法<br>首先创建一个json配置文件：&#x2F;etc&#x2F;shadowsocks.json,内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;server&quot;</span>: <span class="string">&quot;server_ip_address&quot;</span>,</span><br><span class="line">  <span class="string">&quot;server_port&quot;</span>: 8836,</span><br><span class="line">  <span class="string">&quot;local_address&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>,</span><br><span class="line">  <span class="string">&quot;local_port&quot;</span>: 1080,</span><br><span class="line">  <span class="string">&quot;password&quot;</span>: <span class="string">&quot;password&quot;</span>,</span><br><span class="line">  <span class="string">&quot;timeout&quot;</span>: 300,</span><br><span class="line">  <span class="string">&quot;method&quot;</span>: <span class="string">&quot;aes-256-cfb&quot;</span>,</span><br><span class="line">  <span class="string">&quot;fast_open&quot;</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来就可以使用下面的指令启动服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ssserver -c /etc/shadowsocks.json</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者在后台运行</span></span><br><span class="line">ssserver -c /etc/shadowsocks.json -d start</span><br><span class="line">ssserver -c /etc/shadowsocks.json -d stop</span><br></pre></td></tr></table></figure>
+    <p><img data-fancybox="gallery" src="https://i.dawnlab.me/53a8c7cf3ad77a0f0a456ce2c6afe88a.png"  alt="53a8c7cf3ad77a0f0a456ce2c6afe88a.png" data-caption="53a8c7cf3ad77a0f0a456ce2c6afe88a.png" loading="lazy"></p>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>Author：</strong>laishanhai1040<br>
+        <strong>Link：</strong><a href="https://laishanhai1040.github.io/2019/07/21/Shadowsocks-setup-summary/" title="https:&#x2F;&#x2F;laishanhai1040.github.io&#x2F;2019&#x2F;07&#x2F;21&#x2F;Shadowsocks-setup-summary&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;laishanhai1040.github.io&#x2F;2019&#x2F;07&#x2F;21&#x2F;Shadowsocks-setup-summary&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+   
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/shadowsocks/" rel="tag">shadowsocks</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          请在你的配置文件中设置评论框插槽
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Digital-Ocean%E7%9A%84%E6%96%B0%E5%8A%A0%E5%9D%A1droplet"><span class="toc-number">1.</span> <span class="toc-text">使用Digital Ocean的新加坡droplet</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83"><span class="toc-number">1.1.</span> <span class="toc-text">环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Digital-Ocean"><span class="toc-number">1.2.</span> <span class="toc-text">Digital Ocean</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BASSH-key"><span class="toc-number">1.2.1.</span> <span class="toc-text">创建SSH key</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8DO-%E8%B4%A6%E6%88%B7%E4%B8%AD%E6%B7%BB%E5%8A%A0ssh-key"><span class="toc-number">1.2.2.</span> <span class="toc-text">在DO 账户中添加ssh key</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#create-droplet"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">create droplet</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shadowsocks"><span class="toc-number">1.3.</span> <span class="toc-text">shadowsocks</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85shadowsocks"><span class="toc-number">1.3.1.</span> <span class="toc-text">在服务器安装shadowsocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8shadowsocks%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.3.2.</span> <span class="toc-text">启动shadowsocks服务</span></a></li></ol></li></ol></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="Back To Top" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-search-space">
+	<div class="search-container">
+		<div class="search-header">
+			<div class="search-input-container">
+				<input
+					class="search-input"
+					type="text"
+					placeholder="Search"
+					oninput="sinput();"
+				/>
+			</div>
+			<a class="search-close" onclick="sclose();">×</a>
+		</div>
+		<div class="search-body"></div>
+	</div>
+</div>
+
+    
+<script src="/lib/mdui_043tiny/mdui.js"></script>
+<script src="/lib/fancybox/fancybox.umd.js"></script>
+
+
+ 
+
+<script async src="/js/app.js?v=1669187755046"></script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2058306854838448" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
